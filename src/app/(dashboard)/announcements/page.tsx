@@ -4,25 +4,25 @@ import React, { useState, useEffect } from "react";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation"; // Import useRouter for redirection
 import AnnouncementList from "./components/AnnouncementList";
-import AnnouncementForm from "./components/AnnouncementForm";
+// import AnnouncementForm from "./components/AnnouncementForm";
 import {
   getAnnouncements,
   addAnnouncement,
   archiveAnnouncement,
 } from "./models/announcementModel";
-import { supabase } from "@/lib/supabaseClient"; // Import the Supabase client
+// import { supabase } from "@/lib/supabaseClient"; // Import the Supabase client
 import type { Announcement } from "./components/AnnouncementList";
 
 // Define types for data matching Supabase schema
-interface SupabaseAnnouncement {
-  id: string;
-  created_at: string;
-  title?: string | null;
-  content: string;
-  target_audience?: string | null;
-  type?: string | null;
-  published_at?: string | null;
-}
+// interface SupabaseAnnouncement {
+//   id: string;
+//   created_at: string;
+//   title?: string | null;
+//   content: string;
+//   target_audience?: string | null;
+//   type?: string | null;
+//   published_at?: string | null;
+// }
 
 const AnnouncementsPage: React.FC = () => {
   // Use Announcement type for state
@@ -63,10 +63,13 @@ const AnnouncementsPage: React.FC = () => {
       })) as Announcement[];
       setActiveAnnouncements(active.filter((a) => !a.archived));
       setArchivedAnnouncements(archived.filter((a) => a.archived));
-    } catch (err: any) {
-      setError(err.message || "Failed to fetch announcements.");
-      setActiveAnnouncements([]);
-      setArchivedAnnouncements([]);
+    } catch (err: unknown) {
+      console.error("Error fetching announcements:", err);
+      if (err instanceof Error) {
+        setError(err.message || "Failed to fetch announcements.");
+      } else {
+        setError("Failed to fetch announcements.");
+      }
     } finally {
       setLoading(false);
     }

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
+import type { Announcement } from "./AnnouncementList";
 
 interface AnnouncementFormProps {
   onAnnouncementAdded: () => void;
@@ -11,7 +12,7 @@ interface AnnouncementFormProps {
     target_audience?: string | null;
     type?: string | null;
     published_at?: string | null;
-  }) => Promise<{ data: any; error: any }>;
+  }) => Promise<{ data: Announcement[] | null; error: Error | null }>;
 }
 
 const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
